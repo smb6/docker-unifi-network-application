@@ -12,9 +12,10 @@ services:
       - MONGO_DBNAME=unifi
       - MONGO_AUTHSOURCE=admin
     volumes:
-      - /mongodb/data:/data/db
-      - /home/pabloc/dev/unifi/init-mongo.sh:/docker-entrypoint-initdb.d/init-mongo.sh:ro
+      - /srv/docker/unifi/mongodb/data:/data/db
+      - ./init-mongo.sh:/docker-entrypoint-initdb.d/init-mongo.sh:ro
       - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
     restart: unless-stopped
 
   unifi-network-application:
@@ -34,8 +35,9 @@ services:
       - MEM_STARTUP=1024 #optional
       - MONGO_TLS= #optional
     volumes:
-      - /unifi/config:/config
+      - /srv/docker/unifi/config:/config
       - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
     ports:
       - 8443:8443
       - 3478:3478/udp
